@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Calendar, Clock, MapPin, DollarSign, CheckCircle, Circle, ArrowLeft, Star, Coffee, Utensils, Moon, Camera, Info, Lightbulb, Shield, Heart, Plus } from 'lucide-react';
+import { Calendar, Clock, MapPin, DollarSign, CheckCircle, Circle, ArrowLeft, Star, Coffee, Utensils, Moon, Camera, Info, Lightbulb, Shield, Heart, Plus, Map } from 'lucide-react';
 import { GlassCard } from '../UI/GlassCard';
 import { Button } from '../UI/Button';
 import { apiFetch } from '../../api/client';
 import { routes } from '../../api/routes';
 import { ComprehensiveItinerary, DailyPlan, ActivityDetail, ItineraryItem } from '../../types';
+import { ItineraryMap } from '../Maps/ItineraryMap';
+import { TripOverviewMap } from '../Maps/TripOverviewMap';
+import { useItineraryMap } from '../../hooks/useMaps';
 
 interface ViewItineraryProps {
   tripId: string;
@@ -236,6 +239,11 @@ export const ViewItinerary: React.FC<ViewItineraryProps> = ({ tripId, onNavigate
   const [bookedActivities, setBookedActivities] = useState<Set<string>>(new Set());
   const [expandedDay, setExpandedDay] = useState<number | null>(null);
   const [showRecommendations, setShowRecommendations] = useState(false);
+  const [showMap, setShowMap] = useState(false);
+  const [mapView, setMapView] = useState<'overview' | 'detailed'>('overview');
+
+  // Use the maps hook
+  const { mapData, selectedDay, loading: mapLoading, error: mapError, loadItineraryMap, loadDayMap, setSelectedDay } = useItineraryMap(tripId, itinerary);
 
   const loadTripData = useCallback(async () => {
     setLoading(true);
@@ -743,6 +751,13 @@ export const ViewItinerary: React.FC<ViewItineraryProps> = ({ tripId, onNavigate
                   <Info className="w-4 h-4 mr-2" />
                   Travel Tips
                 </Button>
+                <Button
+                  onClick={() => setShowMap(!showMap)}
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                >
+                  <Map className="w-4 h-4 mr-2" />
+                  {showMap ? 'Hide Map' : 'Show Map'}
+                </Button>
               </div>
             </div>
           </GlassCard>
@@ -794,6 +809,73 @@ export const ViewItinerary: React.FC<ViewItineraryProps> = ({ tripId, onNavigate
                     ))}
                   </ul>
                 </div>
+              </div>
+            </GlassCard>
+          )}
+
+          {showMap && (
+            <GlassCard className="p-8 mb-12 animate-fade-in border border-white/40 shadow-2xl">
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-2xl font-serif font-bold text-luxury-900 flex items-center">
+                    <Map className="w-6 h-6 mr-3 text-blue-600" />
+                    Trip Map
+                  </h3>
+                  <div className="flex space-x-2">
+                    <Button
+                      onClick={() => setMapView('overview')}
+                      variant={mapView === 'overview' ? 'primary' : 'ghost'}
+                      className="text-sm"
+                    >
+                      Overview
+                    </Button>
+                    <Button
+                      onClick={() => setMapView('detailed')}
+                      variant={mapView === 'detailed' ? 'primary' : 'ghost'}
+                      className="text-sm"
+                    >
+                      Detailed
+                    </Button>
+                  </div>
+                </div>
+                
+                {mapLoading && (
+                  <div className="flex items-center justify-center h-64 bg-gray-100 rounded-lg">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-gray-600">Loading map data...</span>
+                    </div>
+                  </div>
+                )}
+
+                {mapError && (
+                  <div className="flex items-center justify-center h-64 bg-red-50 rounded-lg border border-red-200">
+                    <div className="text-center">
+                      <div className="text-red-500 text-2xl mb-2">⚠️</div>
+                      <p className="text-red-600 font-medium">Failed to load map</p>
+                      <p className="text-red-500 text-sm mt-1">{mapError}</p>
+                    </div>
+                  </div>
+                )}
+
+                {mapData && !mapLoading && !mapError && (
+                  <div className="space-y-4">
+                    {mapView === 'overview' ? (
+                      <TripOverviewMap
+                        itineraryMapData={mapData}
+                        className="w-full h-96"
+                        showDayMarkers={true}
+                      />
+                    ) : (
+                      <ItineraryMap
+                        itineraryMapData={mapData}
+                        selectedDay={selectedDay}
+                        onDaySelect={setSelectedDay}
+                        className="w-full h-96"
+                      />
+                    )}
+                  </div>
+                )}
               </div>
             </GlassCard>
           )}

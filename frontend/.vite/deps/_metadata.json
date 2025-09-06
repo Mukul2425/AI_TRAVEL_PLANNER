@@ -1,52 +1,58 @@
 {
-  "hash": "c278d6c2",
-  "configHash": "d0b23f3f",
-  "lockfileHash": "c35252de",
-  "browserHash": "37380e27",
+  "hash": "6fe5e016",
+  "configHash": "0e7ee3bc",
+  "lockfileHash": "422e11ab",
+  "browserHash": "e9c01018",
   "optimized": {
     "react": {
       "src": "../../node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "bfd29031",
+      "fileHash": "905058b4",
       "needsInterop": true
     },
     "react-dom": {
       "src": "../../node_modules/react-dom/index.js",
       "file": "react-dom.js",
-      "fileHash": "7d9793c0",
+      "fileHash": "35a47cdd",
       "needsInterop": true
     },
     "lucide-react": {
       "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
       "file": "lucide-react.js",
-      "fileHash": "231ceb6c",
+      "fileHash": "c4af3bcc",
       "needsInterop": false
     },
     "react/jsx-dev-runtime": {
       "src": "../../node_modules/react/jsx-dev-runtime.js",
       "file": "react_jsx-dev-runtime.js",
-      "fileHash": "3c075e75",
+      "fileHash": "23621f1d",
       "needsInterop": true
     },
     "react/jsx-runtime": {
       "src": "../../node_modules/react/jsx-runtime.js",
       "file": "react_jsx-runtime.js",
-      "fileHash": "f02236f0",
+      "fileHash": "3060525e",
+      "needsInterop": true
+    },
+    "@googlemaps/react-wrapper": {
+      "src": "../../node_modules/@googlemaps/react-wrapper/dist/index.umd.js",
+      "file": "@googlemaps_react-wrapper.js",
+      "fileHash": "b5610de4",
       "needsInterop": true
     },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "dd7069e0",
+      "fileHash": "3716c358",
       "needsInterop": true
     }
   },
   "chunks": {
-    "chunk-EQZXVVGP": {
-      "file": "chunk-EQZXVVGP.js"
+    "chunk-55IGENQB": {
+      "file": "chunk-55IGENQB.js"
     },
-    "chunk-JRE55LYH": {
-      "file": "chunk-JRE55LYH.js"
+    "chunk-45FXRYJS": {
+      "file": "chunk-45FXRYJS.js"
     }
   }
 }
