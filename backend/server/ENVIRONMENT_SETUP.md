@@ -25,16 +25,23 @@ AMADEUS_CLIENT_SECRET=your_amadeus_client_secret_here
 3. Create a new application
 4. Copy the Client ID and Client Secret
 
-### 3. Google Places API Key (for restaurants and attractions)
+### 3. Google API Key (for maps, geocoding, directions, and places)
 ```
-GOOGLE_API_KEY=your_google_places_api_key_here
+GOOGLE_MAPS_API_KEY=your_google_api_key_here
 ```
 **How to get it:**
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing one
-3. Enable the "Places API" and "Maps JavaScript API"
+3. Enable the following APIs:
+   - Maps JavaScript API
+   - Geocoding API
+   - Directions API
+   - Places API
 4. Go to "Credentials" → "Create Credentials" → "API Key"
 5. Copy the generated key
+6. (Optional) Restrict the API key to your domain for security
+
+**Note**: You can use the same API key for all Google services (maps, places, geocoding, directions)
 
 ## Complete .env File Example
 
@@ -52,8 +59,8 @@ GEMINI_API_KEY=your_gemini_api_key_here
 AMADEUS_CLIENT_ID=your_amadeus_client_id_here
 AMADEUS_CLIENT_SECRET=your_amadeus_client_secret_here
 
-# Google Places API (Restaurants & Attractions)
-GOOGLE_API_KEY=your_google_places_api_key_here
+# Google API (Maps, Places, Geocoding, Directions)
+GOOGLE_MAPS_API_KEY=your_google_api_key_here
 
 # Server Configuration
 PORT=5000

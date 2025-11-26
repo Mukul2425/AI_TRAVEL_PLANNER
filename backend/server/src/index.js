@@ -9,6 +9,7 @@ import optionsRoutes from './routes/options.js';
 import itineraryRoutes from './routes/itinerary.js';
 import cartRoutes from './routes/cart.js';
 import travelPlanRoutes from './routes/travelPlan.js';
+import mapsRoutes from './routes/maps.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 dotenv.config();
@@ -33,6 +34,7 @@ app.use('/api/options', optionsRoutes);
 app.use('/api/itineraries', itineraryRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/travel-plans', travelPlanRoutes);
+app.use('/api/maps', mapsRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

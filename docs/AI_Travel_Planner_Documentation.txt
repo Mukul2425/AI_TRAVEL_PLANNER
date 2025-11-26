@@ -1,0 +1,302 @@
+AI Travel Planner (Wonderlove)
+Comprehensive Project Documentation (Plain Text)
+Version 1.0 — November 2025
+
+============================================================
+TABLE OF CONTENTS
+============================================================
+1. Abstract
+2. Introduction
+3. Problem Statement & Objectives
+4. System Overview
+5. Key Features
+6. User Personas & Stories
+7. Core Use Cases
+8. Architecture Overview
+9. Technology Stack
+10. Backend Design
+11. Database Schema
+12. API Design (Representative)
+13. Frontend Design
+14. Maps Integration
+15. AI Planning Approach (Idea & Method)
+16. Caching & Performance
+17. Error Handling & Observability
+18. Security, Privacy & Compliance
+19. Deployment & Environment Setup
+20. Testing Strategy
+21. Scalability Considerations
+22. Roadmap & Future Work
+23. Risks & Mitigations
+24. Accessibility & Internationalization
+25. Screenshots (Placeholders)
+26. References (with in-text citations)
+
+============================================================
+1. ABSTRACT
+============================================================
+Wonderlove is a full-stack AI-powered travel planner that produces personalized multi-day
+itineraries and aggregates transport, accommodation, and dining options into a single,
+cohesive experience. The frontend is built with React and TypeScript, while the backend
+uses Node.js/Express with MongoDB for persistence. Google Generative AI (Gemini) provides
+structured itineraries in JSON that the application validates, corrects for day count, and
+presents in a maps-enhanced UI. Authentication is handled via JWT tokens.
+
+Citations: Gemini [1], React [2], Express [3], Mongoose/MongoDB [4], Google Maps [5], JWT [6].
+
+============================================================
+2. INTRODUCTION
+============================================================
+Travel planning typically requires time-consuming research across multiple sources, often
+resulting in generic or impractical agendas. Wonderlove aims to reduce that friction by
+leveraging AI to produce locally relevant, realistic daily plans with specific venues,
+timings, and estimated costs, while allowing travelers to customize selections and manage a
+cart for potential bookings.
+
+============================================================
+3. PROBLEM STATEMENT & OBJECTIVES
+============================================================
+Problem:
+- Planning is fragmented (many tabs, apps, and spreadsheets), and results rarely reflect
+  travelers’ unique interests, budgets, and constraints.
+
+Objectives:
+- Provide AI-generated itineraries that read like advice from a local expert, with
+  realistic logistics and costs.
+- Consolidate discovery of transport, hotels, and restaurants into one workflow.
+- Deliver a polished, responsive UI with secure authentication and persistent state.
+
+============================================================
+4. SYSTEM OVERVIEW
+============================================================
+The system comprises:
+- A React + TypeScript frontend (Vite) for user interaction, trip creation, itinerary
+  viewing, maps visualization, and cart management.
+- A Node.js/Express backend with REST endpoints for auth, trips, itineraries, cart, and
+  options. Mongoose models manage MongoDB persistence.
+- An AI service wrapping Google Generative AI (Gemini) prompts, response parsing, schema
+  validation, and day-count correction.
+
+============================================================
+5. KEY FEATURES
+============================================================
+- Intelligent Itinerary Generation: Multi-day plans with morning/afternoon/evening segments,
+  activity details, timing, estimated cost, and local tips.
+- Trip Management: Create, edit, view trips; attach and render itineraries.
+- Options Explorer: Surface transport, accommodation, and dining options and add to cart.
+- Maps Integration: Visualize locations and overviews via Google Maps.
+- Secure Authentication: JWT-based signup/login and token management.
+- Premium UX: Responsive design and clean, modern UI components.
+
+============================================================
+6. USER PERSONAS & STORIES
+============================================================
+Personas:
+- Busy Professional: Wants efficient planning, reliable schedules, upscale options.
+- Backpacker: Prefers budget, adventurous activities, and local cuisine.
+- Family Planner: Seeks kid-friendly activities, safe areas, and simple logistics.
+
+Stories:
+- As a traveler, I want a 5–7 day plan built around my interests and budget.
+- As a traveler, I want to browse restaurants/hotels and add favorites to a cart.
+- As a traveler, I want to see itinerary locations on an interactive map.
+
+============================================================
+7. CORE USE CASES
+============================================================
+- Generate Itinerary: Submit details (destination, dates, interests, budget, group size)
+  → AI returns structured plan → display and allow adjustments.
+- Explore Options: Query transport/accommodation/restaurants → add selected items to cart.
+- Manage Cart: View, update, or remove items; track budgets and summaries.
+- Authenticate: Signup/login with secure credential handling; persist session token.
+
+============================================================
+8. ARCHITECTURE OVERVIEW
+============================================================
+Layering:
+- Frontend (React/TypeScript) communicates via REST with the backend.
+- Backend (Express) routes requests to controllers and services.
+- AI Service encapsulates Gemini calls, response cleanup, validation, and corrections.
+- MongoDB stores users, trips, itineraries, and cart items.
+
+(Placeholder: High-level architecture diagram)
+
+============================================================
+9. TECHNOLOGY STACK
+============================================================
+Frontend: React, TypeScript, Vite, Tailwind CSS [2]
+Backend: Node.js, Express [3]
+Database: MongoDB with Mongoose [4]
+AI: Google Generative AI (Gemini 1.5 Flash) [1]
+Maps: Google Maps JavaScript APIs [5]
+Auth: JWT (RFC 7519) [6], bcrypt (password hashing)
+
+============================================================
+10. BACKEND DESIGN
+============================================================
+Modules:
+- Controllers: auth, trip, itinerary, options, cart
+- Services: aiService, mapsService, placesService, transportService, travelPlanService
+- Middleware: auth (JWT), rate limiting, centralized error handler
+- Routes: REST endpoints under /api (e.g., /api/auth, /api/trips, /api/itineraries)
+
+AI Service Highlights:
+- Prompt engineering to elicit strict JSON schema outputs.
+- Robust parser: strip markdown fences and comments, remove trailing commas, map
+  alternative keys (e.g., dailyActivities → dailyPlans).
+- Correction pass to enforce dailyPlans length equals number of trip days.
+
+============================================================
+11. DATABASE SCHEMA
+============================================================
+Collections (representative):
+- User: { name, email (unique), password (hashed), timestamps }
+- Trip: { userId, destination, startDate, endDate, interests, budget, groupSize, itineraryId }
+- Itinerary: { summary, dailyPlans[day, date, morning/afternoon/evening, meals, cost],
+  recommendations, practicalInfo }
+- Cart: { userId, tripId, items[type, provider data, price], totals, timestamps }
+
+(Placeholder: ER/Collections diagram)
+
+============================================================
+12. API DESIGN (REPRESENTATIVE)
+============================================================
+Auth:
+- POST /api/auth/signup → create user, return token
+- POST /api/auth/login → authenticate, return token
+
+Trips & Itineraries:
+- GET/POST /api/trips; GET/PUT/DELETE /api/trips/{id}
+- POST /api/itineraries/generate; GET /api/itineraries/{id}
+
+Options & Cart:
+- GET /api/options/{tripId}/transport|accommodation|restaurants
+- POST/GET /api/cart/{tripId}; item subroutes for add/update/remove
+
+============================================================
+13. FRONTEND DESIGN
+============================================================
+- Components: Auth (Login/Signup), Trips (Create/Edit/List/Details), Itinerary
+  (Manager/View), Maps (Overview, Location), Explore (Options), Cart.
+- Hooks: useAuth, useTrips, useMaps; Context: CartContext.
+- Styling: Tailwind CSS for responsive, utility-first layouts.
+
+============================================================
+14. MAPS INTEGRATION
+============================================================
+- Google Maps for location pins, overviews, and potential route previews.
+- Components render maps, markers, and basic directions context.
+
+(Placeholder: Screenshot — Trip Overview Map)
+
+============================================================
+15. AI PLANNING APPROACH (IDEA & METHOD)
+============================================================
+Idea:
+- Use an LLM (Gemini) to generate structured local-expert itineraries, then enhance with
+  external providers for transport/hotels/restaurants.
+
+Method:
+- Prompting: persona-driven with a strict JSON schema (summary, daily plans, recommendations,
+  practical info). Includes destination, dates, interests, budget, and group size.
+- Validation: Clean and parse JSON; validate schema; correct day count to match dates.
+- Extensibility: Allow swapping models, adding retries, or integrating templates/caching.
+
+============================================================
+16. CACHING & PERFORMANCE
+============================================================
+- AI Response Cache: In-memory cache (TTL ~1 hour) keyed by destination/dates/interests/budget.
+- Database: Index frequently queried fields; avoid large unbounded scans.
+- Options: Batch or defer expensive external calls; cache results where appropriate.
+- Frontend: Memoize heavy computations; code-splitting for faster loads.
+
+============================================================
+17. ERROR HANDLING & OBSERVABILITY
+============================================================
+- Centralized Express error middleware for consistent error payloads.
+- Detailed logs around AI calls and parsing to diagnose malformed outputs.
+- Graceful user-facing messages with actionable steps.
+
+============================================================
+18. SECURITY, PRIVACY & COMPLIANCE
+============================================================
+- JWT for authentication; bcrypt for password hashing.
+- CORS configuration, rate limiting, and input validation.
+- Secrets managed via environment variables; minimize PII in logs.
+- Principle of least privilege for API keys; rotate regularly.
+
+============================================================
+19. DEPLOYMENT & ENVIRONMENT SETUP
+============================================================
+Backend:
+- Node 18+; set MONGODB_URI, JWT_SECRET, GEMINI_API_KEY.
+Frontend:
+- Vite; set VITE_API_BASE_URL and optional VITE_API_PATH.
+Run:
+- Local: separate dev servers (frontend/backend). Production: containerize or deploy to PaaS.
+
+============================================================
+20. TESTING STRATEGY
+============================================================
+- Unit: Controllers and services; mock AI and external providers.
+- Contract/API: Validate request/response shapes and error codes.
+- UI: Cover critical flows (auth, trip creation, AI generation, cart operations).
+
+============================================================
+21. SCALABILITY CONSIDERATIONS
+============================================================
+- Stateless services behind a load balancer; horizontal scaling.
+- Externalize caching to Redis when moving beyond a single instance.
+- Database replication/sharding patterns as data volume grows.
+
+============================================================
+22. ROADMAP & FUTURE WORK
+============================================================
+- Payments and booking provider integrations.
+- Multi-currency budgeting and localization.
+- Offline mode; export itineraries (PDF, Calendar/iCal).
+- Collaborative planning and sharing features.
+
+============================================================
+23. RISKS & MITIGATIONS
+============================================================
+- AI Variability: Enforce schema, add retries, post-process corrections.
+- API Rate Limits: Apply caching, exponential backoff, alternative providers.
+- Data Quality/Freshness: Validate critical fields; periodic refresh.
+
+============================================================
+24. ACCESSIBILITY & INTERNATIONALIZATION
+============================================================
+- Accessibility: Color contrast, keyboard navigation, ARIA roles on interactive components.
+- Internationalization: Locale-aware date/number formatting; i18n-ready copy.
+
+============================================================
+25. SCREENSHOTS (PLACEHOLDERS)
+============================================================
+[Insert Screenshot 1: Home / Landing]
+[Insert Screenshot 2: Signup / Login]
+[Insert Screenshot 3: Create Trip]
+[Insert Screenshot 4: AI Plan Results]
+[Insert Screenshot 5: Itinerary View + Map]
+[Insert Screenshot 6: Options Explorer]
+[Insert Screenshot 7: Cart & Budget Summary]
+
+============================================================
+26. REFERENCES (WITH IN-TEXT CITATIONS)
+============================================================
+[1] Google Generative AI (Gemini) — Developer Docs: https://ai.google.dev
+[2] React — Docs: https://react.dev
+[3] Express — Docs: https://expressjs.com
+[4] Mongoose — Docs: https://mongoosejs.com
+[5] Google Maps Platform — Docs: https://developers.google.com/maps
+[6] JWT (RFC 7519): https://datatracker.ietf.org/doc/html/rfc7519
+
+In-text citation example: The itinerary generation relies on Gemini [1]; the frontend is
+implemented with React [2]; APIs are served via Express [3] with MongoDB through Mongoose [4];
+map features use Google Maps Platform [5]; authentication follows JWT [6].
+
+END OF DOCUMENT
+
+
+
+
