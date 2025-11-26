@@ -15,21 +15,52 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onNavigate }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { signup } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const trimmedName = name.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const strongPasswordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_\-])[A-Za-z\d@$!%*?&#^()_\-]{8,}$/;
+
+    if (!trimmedName || !email || !password || !confirmPassword) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    if (trimmedName.length < 3) {
+      setError('Username must be at least 3 characters long');
+      return;
+    }
+
+    if (!emailRegex.test(email.trim())) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (!strongPasswordRegex.test(password)) {
+      setError(
+        'Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character'
+      );
       return;
     }
     
+    setError(null);
     setIsLoading(true);
     
     try {
-      await signup(name, email, password, confirmPassword);
+      await signup(trimmedName, email.trim(), password, confirmPassword);
       onNavigate('dashboard');
-    } catch (error) {
+    } catch (err: any) {
+      const message = err?.message || 'Failed to create account';
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -47,6 +78,11 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onNavigate }) => {
         </div>
 
         <GlassCard className="p-8">
+          {error && (
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="relative">
               <label className="block text-sm font-medium text-luxury-700 mb-2">Full Name</label>
@@ -98,6 +134,9 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onNavigate }) => {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
+              <p className="mt-1 text-xs text-luxury-500">
+                Use at least 8 characters with uppercase, lowercase, a number, and a special character.
+              </p>
             </div>
 
             <div className="relative">
@@ -121,7 +160,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onNavigate }) => {
               disabled={isLoading}
               className="w-full"
             >
-              {isLoading ? 'Creating Account...' : 'Join Luxe Voyager'}
+              {isLoading ? 'Creating Account...' : 'Join Wonderlove'}
             </Button>
           </form>
 

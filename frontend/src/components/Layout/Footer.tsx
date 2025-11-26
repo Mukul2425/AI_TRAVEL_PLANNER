@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
                 <Plane className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-2xl font-serif font-bold">Luxe Voyager</h3>
+                <h3 className="text-2xl font-serif font-bold">Wonderlove</h3>
                 <p className="text-gold-400 text-sm">Travel Beyond Luxury</p>
               </div>
             </div>
@@ -131,7 +131,7 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-gold-400 flex-shrink-0" />
-                <p className="text-luxury-300">concierge@luxevoyager.com</p>
+                <p className="text-luxury-300">concierge@wonderlove.com</p>
               </div>
             </div>
           </div>
@@ -141,7 +141,7 @@ export const Footer: React.FC = () => {
         <div className="border-t border-luxury-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="text-luxury-400 text-sm mb-4 md:mb-0">
-              © 2024 Luxe Voyager. All rights reserved. | 
+              © 2024 Wonderlove. All rights reserved. | 
               <a href="#" className="hover:text-gold-400 transition-colors duration-300 ml-1">Privacy Policy</a> | 
               <a href="#" className="hover:text-gold-400 transition-colors duration-300 ml-1">Terms of Service</a>
             </div>
