@@ -1,4 +1,4 @@
-AI Travel Planner (Wonderlove)
+AI Travel Planner (Wanderlove)
 Comprehensive Project Documentation (Plain Text)
 Version 1.0 — November 2025
 
@@ -35,7 +35,7 @@ TABLE OF CONTENTS
 ============================================================
 1. ABSTRACT
 ============================================================
-Wonderlove is a full-stack AI-powered travel planner that produces personalized multi-day
+Wanderlove is a full-stack AI-powered travel planner that produces personalized multi-day
 itineraries and aggregates transport, accommodation, and dining options into a single,
 cohesive experience. The frontend is built with React and TypeScript, while the backend
 uses Node.js/Express with MongoDB for persistence. Google Generative AI (Gemini) provides
@@ -48,7 +48,7 @@ Citations: Gemini [1], React [2], Express [3], Mongoose/MongoDB [4], Google Maps
 2. INTRODUCTION
 ============================================================
 Travel planning typically requires time-consuming research across multiple sources, often
-resulting in generic or impractical agendas. Wonderlove aims to reduce that friction by
+resulting in generic or impractical agendas. Wanderlove aims to reduce that friction by
 leveraging AI to produce locally relevant, realistic daily plans with specific venues,
 timings, and estimated costs, while allowing travelers to customize selections and manage a
 cart for potential bookings.

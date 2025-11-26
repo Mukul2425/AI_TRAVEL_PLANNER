@@ -160,7 +160,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({ onNavigate }) => {
               disabled={isLoading}
               className="w-full"
             >
-              {isLoading ? 'Creating Account...' : 'Join Wonderlove'}
+              {isLoading ? 'Creating Account...' : 'Join Wanderlove'}
             </Button>
           </form>
 

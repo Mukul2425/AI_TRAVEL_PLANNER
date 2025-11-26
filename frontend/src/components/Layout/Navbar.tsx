@@ -25,7 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               <Plane className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-serif font-bold text-luxury-900">Wonderlove</h1>
+              <h1 className="text-2xl font-serif font-bold text-luxury-900">Wanderlove</h1>
               <p className="text-xs text-gold-600 -mt-1">Travel Beyond Luxury</p>
             </div>
           </div>
